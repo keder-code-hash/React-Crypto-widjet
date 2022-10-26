@@ -1,6 +1,17 @@
-import {ICanvas, IPlot} from "./chart-def"
 
-export function serializeDataArray(YAxisSeries:number[],XAxisSeries:number[],canvas_height:number,canvas_width:number):number[][]{
+/**
+ * 
+ * @param YAxisSeries : all values required to plot y axis;
+ * @param XAxisSeries : all values required to plot x axis;
+ * @param canvas_height : canvas Height;
+ * @param canvas_width : canvas Width
+ * @returns : serialized Y axis and X axis Data based upon the canvas Height And Width;
+ */
+export function serializeDataArray(YAxisSeries:number[],
+                                    XAxisSeries:number[],
+                                    canvas_height:number,
+                                    canvas_width:number):number[][]{
+
 
     let maxYAxisSeries=Math.max(...YAxisSeries);
     let minYAxisSeries=Math.min(...YAxisSeries);
@@ -15,13 +26,18 @@ export function serializeDataArray(YAxisSeries:number[],XAxisSeries:number[],can
     for(let i=0;i<YAxisSeries.length;i++){
         serializedYAxisSeries[i]=(YAxisSeries[i]-minYAxisSeries)*YAxisRatio;
     }
+    /**
+     * Values for minimum Y axis and maximum Y axis values are fetched. Then based upon the 
+     * can vas Height Y axis ratio is calculated to putdown all values in canvas properly.
+     * Median for all Y axis values are calculated and set the values for serialized Y
+     * axis accordingly.
+     */
     for(let i=0;i<YAxisSeries.length;i++){
         let shiftedYAxisValue=medianYAxis-serializedYAxisSeries[i];
         let serializedYAxisValue:number;
         if(shiftedYAxisValue>medianYAxis){
             serializedYAxisValue=shiftedYAxisValue-medianYAxis;
             if(serializedYAxisValue>canvas_height/2){
-                console.log(YAxisSeries[i]);
                 serializedYAxisValue=canvas_height;
             }
         }

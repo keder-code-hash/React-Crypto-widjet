@@ -3,12 +3,6 @@ import './home.css';
 import {Canvas} from "../../components/canvas/Canvas";
 import {Error} from "../../components/Error/Error";
 import { fetchData } from '../../components/utils';
-/**
- * add documentation properly over all code
- * add error handling with internet connection too.
- * change some styling.
- * 
- */
 
 
 export function Home(){
