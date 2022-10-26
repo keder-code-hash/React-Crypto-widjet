@@ -2,6 +2,12 @@ import React, { Component, useEffect } from 'react'
 import './home.css';
 import {Canvas} from "../../components/canvas/Canvas";
 
+/**
+ * add documentation properly over all code
+ * add error handling with internet connection too.
+ * change some styling.
+ * 
+ */
 
 async function fetchData(coin_name:string,day:number,period:string){
     const URL="https://api.coingecko.com/api/v3/coins/"+coin_name+"/market_chart?vs_currency=USD&days="+day+"&interval="+period;
@@ -22,16 +28,17 @@ export function Home(){
     const [coin,setCoin]=React.useState<string>("bitcoin");
     const [unitDiff,setUnitDiff]=React.useState<number>(0);
     const [percentageGain,setPercentageGain]=React.useState<string>('');
+    const [coinPrice,setCoinPrice]=React.useState<string>('');
 
     const handleClickPeriod=(e:any)=>{
         let innerText:string=e.target.innerText;
         if(innerText==='1D'){
             setPeriod(1);
         }
-        else if(innerText=='7D'){
+        else if(innerText==='7D'){
             setPeriod(7);
         }
-        else if(innerText=='30D'){
+        else if(innerText==='30D'){
             setPeriod(30);
         }
     } 
@@ -40,7 +47,7 @@ export function Home(){
         if(innerText==='ETH'){
             setCoin("ethereum");
         }
-        else if(innerText=='BTC'){
+        else if(innerText==='BTC'){
             setCoin("bitcoin");
         }
     }
@@ -49,7 +56,9 @@ export function Home(){
         fetchData(coin,period,"minutely").then((data)=>{
             setData(data);
             let diff:number=data[data.length-1]-data[0];
+            let price:number=data[data.length-1];
             setUnitDiff(diff);
+            setCoinPrice(String(Math.floor(price)));
             let percentDiff:number=(diff/data[data.length-1])*100;
             if(percentDiff>=0){
                 setPercentageGain("+"+percentDiff.toFixed(2));
@@ -65,7 +74,7 @@ export function Home(){
             <div className="container">
                 <div className="row">
                     <div className="col col-sm-12 col-md-12 col-lg-12">
-                        <Canvas data={data} coinName={coin} unitDiff={unitDiff} percentGain={percentageGain}/>
+                        <Canvas data={data} coinName={coin} unitDiff={unitDiff} percentGain={percentageGain} coinPrice={coinPrice}/>
                     </div>
                 </div>
                 <div className="row"> 
