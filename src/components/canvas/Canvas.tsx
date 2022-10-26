@@ -45,7 +45,7 @@ export const Canvas = (props:coinData) => {
     },[props]);
     
   return( 
-    <canvas id="canvas" height="500" width="700" ref={canvasRef}/>
+    <canvas id="canvas" height="400" width="600" ref={canvasRef}/>
   )
 }
 

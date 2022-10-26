@@ -1,7 +1,8 @@
 import React, { Component, useEffect } from 'react'
 import './home.css';
 import {Canvas} from "../../components/canvas/Canvas";
-
+import {Error} from "../../components/Error/Error";
+import { fetchData } from '../../components/utils';
 /**
  * add documentation properly over all code
  * add error handling with internet connection too.
@@ -9,18 +10,6 @@ import {Canvas} from "../../components/canvas/Canvas";
  * 
  */
 
-async function fetchData(coin_name:string,day:number,period:string){
-    const URL="https://api.coingecko.com/api/v3/coins/"+coin_name+"/market_chart?vs_currency=USD&days="+day+"&interval="+period;
-    let response=await fetch(URL);
-    const data=await response.json();
-    let priceArray=data.prices;
-    let prices=[]
-    for(let i=0;i<priceArray.length;i++){
-        prices.push(priceArray[i][1]);
-    }
-    return prices;
-}
-  
 
 export function Home(){
     const [data,setData]=React.useState<number[]>([]);
@@ -29,6 +18,7 @@ export function Home(){
     const [unitDiff,setUnitDiff]=React.useState<number>(0);
     const [percentageGain,setPercentageGain]=React.useState<string>('');
     const [coinPrice,setCoinPrice]=React.useState<string>('');
+    const [error,setError]=React.useState<string>('');
 
     const handleClickPeriod=(e:any)=>{
         let innerText:string=e.target.innerText;
@@ -52,26 +42,38 @@ export function Home(){
         }
     }
 
-    useEffect(()=>{
-        fetchData(coin,period,"minutely").then((data)=>{
-            setData(data);
-            let diff:number=data[data.length-1]-data[0];
-            let price:number=data[data.length-1];
-            setUnitDiff(diff);
-            setCoinPrice(String(Math.floor(price)));
-            let percentDiff:number=(diff/data[data.length-1])*100;
-            if(percentDiff>=0){
-                setPercentageGain("+"+percentDiff.toFixed(2));
-            }
-            else{
-                setPercentageGain("-"+percentDiff.toFixed(2));
-            }
-        });
+    useEffect(()=>{ 
+        fetchData(coin,1,"minutely").then((data)=>{ 
+            let price:number=data[data.length-1]; 
+            setCoinPrice(String(Math.floor(price))); 
+        }).catch((error)=>{
+            setError("Please Check Internet Connnection.")
+        }).then(()=>{
+            fetchData(coin,period,"minutely").then((data)=>{
+                setData(data);
+                let diff:number=data[data.length-1]-data[0];
+                setUnitDiff(diff);
+                let percentDiff:number=(diff/data[data.length-1])*100;
+                if(percentDiff>=0){
+                    setPercentageGain("+"+percentDiff.toFixed(2));
+                }
+                else{
+                    setPercentageGain("-"+percentDiff.toFixed(2));
+                }
+            }).catch((error)=>{
+                setError("Please Check Internet Connnection.")
+            });
+        })
+         
     },[period,coin]);
 
     return(
         <React.Fragment>
-            <div className="container">
+            {
+                error!=='' ? 
+                <Error error={error}/>  :
+                <div className="container">
+                
                 <div className="row">
                     <div className="col col-sm-12 col-md-12 col-lg-12">
                         <Canvas data={data} coinName={coin} unitDiff={unitDiff} percentGain={percentageGain} coinPrice={coinPrice}/>
@@ -92,6 +94,8 @@ export function Home(){
                     </div>
                 </div>
             </div>
+            }
+            
         </React.Fragment>
     )
 }
