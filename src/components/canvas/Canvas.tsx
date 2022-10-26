@@ -31,8 +31,8 @@ export const Canvas = (props:coinData) => {
           context.font = "20px Bahnschrift";
           context.fillStyle = "#81c995";
           context.textAlign = "center";
-          context.fillText("$"+String(props.unitDiff.toFixed(3)),500,50);
-          context.fillText(String(props.percentGain)+"%",500,75);
+          context.fillText("$"+String(props.unitDiff.toFixed(3)),400,50);
+          context.fillText(String(props.percentGain)+"%",400,75);
           
           // coin price in canvas
           context.font = "40px Bahnschrift";
