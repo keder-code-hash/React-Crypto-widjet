@@ -46,5 +46,13 @@ border-right: none;
 }
 
 .container{
-    margin-top: 3%;
+    margin-top: 1%;
+}
+.plot-container{
+    background-color: black; 
+    height: 57rem;
+}
+.button-container{
+    margin-top: 50%;
+    margin-bottom: 50%;
 }

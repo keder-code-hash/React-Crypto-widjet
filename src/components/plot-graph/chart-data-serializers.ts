@@ -18,9 +18,10 @@ export function serializeDataArray(YAxisSeries:number[],XAxisSeries:number[],can
     for(let i=0;i<YAxisSeries.length;i++){
         let shiftedYAxisValue=medianYAxis-serializedYAxisSeries[i];
         let serializedYAxisValue:number;
-        if(shiftedYAxisValue>=medianYAxis){
+        if(shiftedYAxisValue>medianYAxis){
             serializedYAxisValue=shiftedYAxisValue-medianYAxis;
             if(serializedYAxisValue>canvas_height/2){
+                console.log(YAxisSeries[i]);
                 serializedYAxisValue=canvas_height;
             }
         }

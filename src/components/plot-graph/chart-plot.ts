@@ -8,16 +8,16 @@ export function _drawLine(context:CanvasRenderingContext2D,prevX:number,prevY:nu
     context.stroke();
 }
 export function _putColor(context:CanvasRenderingContext2D,seriesX:number[],seriesY:number[]):void{ 
-    var grd = context.createLinearGradient(0, 0, 400, 600);
+    var grd = context.createLinearGradient(0, 0, 0, 450);
     grd.addColorStop(0, "#b5e6c2");
     grd.addColorStop(1, "black");
 
     context.beginPath();
-    context.moveTo(0,400);
+    context.moveTo(0,600);
     for(let i=0;i<seriesX.length;i++){
         context.lineTo(seriesX[i],seriesY[i]);
     }
-    context.lineTo(seriesX[seriesX.length-1],400);
+    context.lineTo(seriesX[seriesX.length-1],600);
     context.closePath();
 
     context.lineWidth = 0;

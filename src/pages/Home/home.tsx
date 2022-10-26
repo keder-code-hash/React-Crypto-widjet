@@ -77,12 +77,15 @@ export function Home(){
                         <Canvas data={data} coinName={coin} unitDiff={unitDiff} percentGain={percentageGain} coinPrice={coinPrice}/>
                     </div>
                 </div>
+                
                 <div className="row"> 
                     <div className="btn-group">
                         <button id='period-btn-1D' className='period-btn' onClick={handleClickPeriod}>1D</button>
                         <button id='period-btn-7D' className='period-btn' onClick={handleClickPeriod}>7D</button>
                         <button id='period-btn-30D' className='period-btn' onClick={handleClickPeriod}>30D</button>
                     </div>
+                </div>
+                <div className="row">
                     <div className="btn-group">
                         <button id='period-btn-btc' className='period-btn' onClick={handleClickCoins}>BTC</button>
                         <button id='period-btn-eth' className='period-btn' onClick={handleClickCoins}>ETH</button> 
