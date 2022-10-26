@@ -28,7 +28,7 @@ border-right: none;
 #btn-group button:hover {
     background-color: #4287f5;
 }
-#period-btn {
+.period-btn {
     background-color: #426cf5;
     border: none;
     color: white;
