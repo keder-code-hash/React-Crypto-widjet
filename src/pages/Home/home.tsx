@@ -4,7 +4,7 @@ import {Canvas} from "../../components/canvas/Canvas";
 
 
 async function fetchData(coin_name:string,day:number,period:string){
-    const URL="https://api.coingecko.com/api/v3/coins/"+coin_name+"/market_chart?vs_currency=USD&days="+day+"&interval="+period;
+    const URL="https://api.coingecko.com/api/v3/coins/"+coin_name+"/market_chart?vs_currency=INR&days="+day+"&interval="+period;
     let response=await fetch(URL);
     const data=await response.json();
     let priceArray=data.prices;
@@ -13,14 +13,14 @@ async function fetchData(coin_name:string,day:number,period:string){
         prices.push(priceArray[i][1]);
     }
     return prices;
-  }
+}
   
-
 
 export function Home(){
     const [data,setData]=React.useState<number[]>([]);
     const [period,setPeriod]=React.useState<number>(1);
     const [coin,setCoin]=React.useState<string>("bitcoin");
+    const [unitDiff,setUnitDiff]=React.useState<number>(0);
 
     const handleClickPeriod=(e:any)=>{
         let innerText:string=e.target.innerText;
@@ -33,7 +33,6 @@ export function Home(){
         else if(innerText=='30D'){
             setPeriod(30);
         }
-        fetchData(coin,period,"hourly").then((data)=>setData(data));
     } 
     const handleClickCoins=(e:any)=>{
         let innerText:string=e.target.innerText;
@@ -43,19 +42,23 @@ export function Home(){
         else if(innerText=='BTC'){
             setCoin("bitcoin");
         }
-        fetchData(coin,period,"hourly").then((data)=>setData(data));
     }
 
     useEffect(()=>{
-        fetchData(coin,period,"hourly").then((data)=>setData(data));
-    },[]);
+        fetchData(coin,period,"minutely").then((data)=>{
+            setData(data);
+            let diff:number=data[data.length-1]-data[0];
+            setUnitDiff(diff);
+            console.log(diff);
+        });
+    },[period,coin]);
 
     return(
         <React.Fragment>
             <div className="container">
                 <div className="row">
                     <div className="col col-sm-12 col-md-12 col-lg-12">
-                        <Canvas data={data}/>
+                        <Canvas data={data} coinName={coin} unitDiff={unitDiff}/>
                     </div>
                 </div>
                 <div className="row"> 
