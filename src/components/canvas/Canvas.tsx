@@ -6,6 +6,7 @@ type coinData={
   data:number[];
   coinName:string;
   unitDiff:number;
+  percentGain:string;
 }
 
 export const Canvas = (props:coinData) => {
@@ -23,7 +24,11 @@ export const Canvas = (props:coinData) => {
           context.textAlign = "center";
           context.fillText(props.coinName,100,50);
 
-          context.fillText(String(props.unitDiff.toFixed(3)),400,50);
+          context.font = "20px Bahnschrift";
+          context.fillStyle = "white";
+          context.textAlign = "center";
+          context.fillText("$"+String(props.unitDiff.toFixed(3)),500,50);
+          context.fillText(String(props.percentGain)+"%",500,75);
 
           plotGraph(canvas,context,props.data);
       }
